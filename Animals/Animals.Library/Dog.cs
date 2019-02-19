@@ -1,20 +1,20 @@
 using System;
 
-namespace Animals.UI
+namespace Animals.Library
 {
-    internal class Dog
+    public class Dog
     {
         // field
-        internal string Noise = "Woof!";
+        public string Noise = "Woof!";
         // methods
-        internal void GoTo(string location)
+        public void GoTo(string location)
         {
             // simple way
             // Console.WriteLine("Walking to " + location);
             // similar to JS
             Console.WriteLine($"Walking to {location}");
         }
-        internal void MakeNoise()
+        public void MakeNoise()
         {
             Console.WriteLine(Noise);
         }
