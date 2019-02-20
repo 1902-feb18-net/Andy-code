@@ -10,7 +10,13 @@ namespace Collection
         {
             Console.WriteLine("Hello World!");
             Arrays();
+            Lists();
+            Sets();
             StringEquality();
+
+            //couple other collections
+            new Stack<int>(); // first in, last out
+            new Queue<int>(); // first in, first out
 
         }
 
