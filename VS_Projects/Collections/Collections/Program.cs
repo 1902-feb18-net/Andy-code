@@ -91,8 +91,8 @@ namespace Collection
             set.Add("abc");
             set.Add("abclasmda");
             // we take idea from math
-            // a set has no concept of cuplicates, something is either in it or not
-            // a set also has no conept of order
+            // a set has no concept of duplicates, something is either in it or not
+            // a set also has no concept of order
             Console.WriteLine(set.Count);
 
             //sets are usfull when we arent interested in storing in any order
