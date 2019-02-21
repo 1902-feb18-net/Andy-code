@@ -26,7 +26,6 @@ namespace ML.Test
             var list = new MemoryList<int>();
             list.Add(value);
             Assert.True(list.Contains(value));
-
         }
 
         // testin Contains function
