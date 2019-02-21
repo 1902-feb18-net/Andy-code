@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.421
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MemoryList.Library", "MemoryList.Library\MemoryList.Library.csproj", "{4834C9F9-8798-4034-B558-951BD93A2A1E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MemoryList.Library", "MemoryList.Library\MemoryList.Library.csproj", "{4834C9F9-8798-4034-B558-951BD93A2A1E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MemoryList.Tests", "MemoryList.Test\MemoryList.Tests.csproj", "{259E874C-F40C-44BD-B447-E6C786180309}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MemoryList.Tests", "MemoryList.Test\MemoryList.Tests.csproj", "{259E874C-F40C-44BD-B447-E6C786180309}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
