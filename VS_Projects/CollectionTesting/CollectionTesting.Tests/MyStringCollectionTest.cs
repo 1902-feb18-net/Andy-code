@@ -1,5 +1,6 @@
 using System;
 using Xunit;
+using CollectionTesting.Library;
 
 namespace CollectionTesting.Test
 {
@@ -30,7 +31,7 @@ namespace CollectionTesting.Test
         // FactAttribute is our 1st example of a c# attribute
         [Fact]
         //put our test methods inside an otherwise ordinary class
-        public void AddOneAndContainsShouldBeCorrect()
+        public void AddShouldNotThrowException()
         {
             // three general steps to unit test
             // 1. arrange
@@ -45,6 +46,7 @@ namespace CollectionTesting.Test
             // none needed here
         }
 
+        [Fact]
         public void ContainsShouldBeTrueOrContained()
         {
             //arrange
@@ -52,24 +54,25 @@ namespace CollectionTesting.Test
             collection.Add("asdf");
 
             //act
-            var result = collection.ContainsShouldBeTrueOrContained("asdf");
+            var result = collection.Contains("asdf");
 
             //assert
             Assert.True(result);
         }
 
-        //public void ContainsShouldBeTrueOrNotContained()
-        //{
-        //    //arrange
-        //    var collection = new MyStringCollectionTest();
-        //    collection.Add("asdf");
+        [Fact]
+        public void ContainsShouldBeFalseForNotContained()
+        {
+            //arrange
+            var collection = new MyStringCollectionTest();
+            collection.Add("asdf");
 
-        //    //act
-        //    var result = collection.ContainsShouldBeTrueOrContained("asdf");
+            //act
+            var result = collection.Contains("asdf");
 
-        //    //assert
-        //    Assert.True(result);
-        //}
+            //assert
+            Assert.False(result);
+        }
 
         [Fact]
         public void RemoveEmptyShouldRemoveOneEmpty()

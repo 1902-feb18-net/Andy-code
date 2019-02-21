@@ -13,18 +13,35 @@ namespace CollectionTesting.Library
 
         // at least 5 methods on there
 
+        // : base() this means if someone calls the zero param constructo
+        // first call the base class's zero param constructor (this is done by default)
+        public MyStringCollection() : base()
+        {
+
+        }
+
+        public MyStringCollection(string[] initial) : base(initial)
+        {
+
+        }
+
+        // in c# we prefer thin constructors,
+        // and setting properties after the fact
+        // If we still want validation logic, can put that in propert "sets" and 
+        // maybe a .validate method
+
         // now we are getting field from parent class
         //private List<String> _list = new List<string>();
 
-        public void Add(string value)
-        {
-            _list.Add(value);
-        }
+        //public void Add(string value)
+        //{
+        //    _list.Add(value);
+        //}
 
-        public void Contains(string value)
-        {
-            _list.Contains(value);
-        }
+        //public void Contains(string value)
+        //{
+        //    _list.Contains(value);
+        //}
 
         /// <summary>
         /// Replace all contained strings with lowercased versions
