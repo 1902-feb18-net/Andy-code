@@ -34,7 +34,7 @@ namespace RefAndOut
 
             // this enables methods to effectively return several things at once
             // bit nicer than try catch, don't have to deal with exceptions
-            int number; 
+            int number;
             if (int.TryParse(input, out number))
             {
                 Console.WriteLine($"num entered: {number}");
@@ -117,8 +117,8 @@ namespace RefAndOut
             string logLevel = match.Groups[3].Value;
             string datestr = match.Groups[1] + " " + match.Groups[2];
 
-            if(DateTime.TryParse(datestr, out var date))
-                {
+            if (DateTime.TryParse(datestr, out var date))
+            {
                 Console.WriteLine(date);
             }
             else
