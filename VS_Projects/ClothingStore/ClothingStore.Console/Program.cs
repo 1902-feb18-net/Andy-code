@@ -25,6 +25,7 @@ namespace ClothingStore.ConsoleApp
                         break;
                     case "a":
                         Console.WriteLine("Type in a store location here.");
+                        Test();
                         break;
                     case "q":
                         Console.WriteLine("Bye! Please come again!");
@@ -33,8 +34,18 @@ namespace ClothingStore.ConsoleApp
                         Console.WriteLine("\n[Please enter a valid command]");
                         break;
                 }
+                if (input == "q")
+                {
+                    break;
+                }
                 
             }
+        }
+
+        // let's write other functions here
+        static void Test()
+        {
+            Console.WriteLine("We are using Test");
         }
     }
 }
