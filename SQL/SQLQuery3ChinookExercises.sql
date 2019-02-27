@@ -35,6 +35,20 @@ SELECT COUNT(InvoiceDate) as Count, SUM(Total) as [Total Sales]
 FROM dbo.Invoice
 WHERE InvoiceDate >= '2009' AND InvoiceDate < '2010'
 
+SELECT COUNT(InvoiceDate) as Count, SUM(Total) as [Total Sales]
+FROM dbo.Invoice
+GROUP BY YEAR(InvoiceDate);
+
+SELECT COUNT(InvoiceDate) as Count, SUM(Total) as [Total Sales]
+FROM Invoice
+--WHERE DATEPART(YEAR, InvoiceDate) = 2009;
+WHERE InvoiceDate BETWEEN '2009' AND '2010';
+
+SELECT YEAR(InvoiceDate) AS YEAR, COUNT(InvoiceDate) AS Count, Sum(Total) as TotalCost
+FROM Invoice
+GROUP BY YEAR(InvoiceDate);
+
+
 -- 6. how many line items were there for invoice #37?
 --SELECT *
 --FROM dbo.InvoiceLine
