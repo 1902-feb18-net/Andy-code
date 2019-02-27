@@ -158,7 +158,8 @@ FROM Artist
 WHERE ArtistId = (
 	SELECT ArtistId
 	FROM Album AS a1
-	WHERE Album.Title = null
+	WHERE 
+	--WHERE LEN(Title) >= ALL (SELECT LEN(Title) FROM Album)
 )
 
 --2. which artists did not record any tracks of the Latin genre?
