@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Enitity2
+namespace Entity3Database
 {
     class Program
     {
