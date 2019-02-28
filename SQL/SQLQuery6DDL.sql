@@ -88,5 +88,155 @@ SELECT * FROM Movie.Movie;
 
 DELETE FROM Movie.Genre;
 
--- no good
-ALTER TABLE Movie.Movie ADD CONSTRAINT NN_GenreID NOT NULL(GenreID);
+ALTER TABLE Movie.Movie 
+	ALTER COLUMN  GenreID INT NOT NULL;
+
+
+-- Computed columns
+
+-- dropping FullName after making a mistake
+--ALTER TABLE Movie.Movie DROP COLUMN FullName;
+
+ALTER TABLE Movie.Movie ADD
+	FullName AS (Title + ' (' + CONVERT(NVARCHAR, YEAR(ReleaseDate)) + ')');
+
+SELECT * FROM Movie.Movie
+-- Comuted col have different options like PERSISTED
+
+-- view
+GO
+
+--ALTER VIEW Movie.NewReleases AS
+--	SELECT * FROM Movie.Movie
+--	WHERE RleaseDate 
+
+CREATE VIEW Movie.NewReleases AS 
+	SELECT * FROM Movie.Movie
+	WHERE ReleaseDate > '2019-01-01';
+
+SELECT * FROM Movie.NewReleases;
+
+INSERT INTO Movie.NewReleases (Title, ReleaseDate, GenreID) VALUES
+	('LOTR: The Two Towers', '2019-02-01', 
+		(SELECT GenreId FROM Movie.Genre WHERE Name = 'Action/Adventure'));
+
+-- views provides an abstraction over the actual table structure
+-- by running a query behind the scenes to generated what pretends to be a table
+
+-- we can do inserts/updates/deletes through it too, but
+-- only on col that directly map to real table col
+
+--var in SQL server using @ symbols
+DECLARE @action AS INT;
+SET @action = 1;
+
+-- table-valued var
+DECLARE @my_table AS TABLE (
+	col1 INT, col2 INT
+);
+
+-- can use above as a temporary table
+-- use things like INSERT INTO @my_table
+-- .. etc
+
+-- user-defined functions
+GO
+CREATE FUNCTION Movie.MoviesReleasedInYear(@year INT)
+RETURNS INT
+AS
+BEGIN
+	DECLARE @result INT;
+
+	SELECT @result = COUNT(*)
+	FROM Movie.Movie
+	WHERE YEAR(ReleaseDate) = @year;
+
+	RETURN @result;
+END
+GO
+
+SELECT Movie.MoviesReleasedInYear(2002);
+
+-- functions do not allow writing any data = only reading
+
+-- EXERCISE
+-- 1. write a function to get the initials of a customer based on his ID (look up string functions)
+GO
+--CREATE FUNCTION CustomerInitials(@initials VARCHAR)
+--RETURNS VARCHAR
+--AS
+--BEGIN
+--	DECLARE @result VARCHAR;
+--	SELECT @result = LEFT(c.FirstName, 1) + LEFT(c.LastName, 1)
+--	FROM Customer AS c
+--	RETURN @result;
+--END
+
+CREATE FUNCTION GetCustomerInitials(@Id INT)
+RETURNS NVARCHAR(3)
+AS
+BEGIN
+	DECLARE @initials NVARCHAR(3);
+
+	-- in SQL, string indexing is 1-based
+	SELECT @initials = SUBSTRING(FirstName, 1, 1) + SUBSTRING(LastName, 1, 1)
+	FROM Customer
+	WHERE CustomerId = @id;
+
+	RETURN @initials;
+END
+GO
+
+CREATE TRIGGER Movie.MovieDateModified ON Movie.Movie
+AFTER UPDATE
+AS
+BEGIN
+	-- inside a trigger you have access to two special table vars
+	-- inserted and deleted
+	UPDATE Movie.Movie
+	SET DateModified = GETDATE()
+	WHERE MovieId IN (SELECT MovieId FROM inserted)
+	-- in this case , inserted has the new verson of updated rows
+END
+
+SELECT * FROM Movie.Movie;
+UPDATE Movie.Movie
+SET Title = 'LOTR: FEllowship of the ring'
+WHERE MovieId = 1;
+
+-- we can do triggers on INSERT, UPDATE, or DELETE
+-- they can be BEFORE, AFTER, or INSTEAD OF
+
+-- PROCEDURES
+-- procedure are like functions
+-- but they allow any sql command inside them, including DB write
+-- they don't have to return anything
+-- you can only call them with EXECUTE, never inside a SELECT or anything else
+GO
+CREATE PROCEDURE Movie.RenameMovies(@newname NVARCHAR(50), @rowsChanged INT OUTPUT)
+AS
+BEGIN
+	-- we can use WHILE loops, IF ELSE, TRY CATCH
+	BEGIN TRY
+		If (EXISTS (SELECT * FROM Movie.Movie))
+		BEGIN 
+			SET @rowsChanged = (SELECT COUNT(*) FROM Movie.Movie)
+			UPDATE Movie.Movie
+			SET Title = @newname
+		END
+		ELSE
+		BEGIN
+			SET @rowsChanged = 0;
+			RAISERROR('No movies found!', 16, 1);
+		END
+		END TRY
+	BEGIN CATCH
+		PRINT ERROR_MESSAGE()
+	END CATCH
+END
+GO
+
+-- how to use a procedure, ALMOST correct
+DECLARE @rowschanged INT;
+EXECUTE Movie.RenameMovies 'Movie', @rowschanged;
+SELECT @rowschanged;

@@ -44,11 +44,17 @@ FROM Invoice as I
 WHERE c.Country = 'Brazil'
 
 --2. show all invoices together with the name of the sales agent of each one
-SELECT e1.FirstName, e1.LastName, i1.*
+SELECT i1.InvoiceId, e1.FirstName, e1.LastName
 FROM Invoice AS i1
-INNER JOIN Employee AS e1 ON i1.CustomerId = e1.EmployeeId
+	INNER JOIN Customer AS c ON c.CustomerId = i1.CustomerId
+	INNER JOIN Employee AS e1 ON e1.EmployeeId = c.SupportRepId;
 
 --3. show all playlists ordered by the total number of tracks they have
+SELECT pl.Name, COUNT(pl.PlaylistId)
+FROM Playlist AS pl
+	INNER JOIN PlaylistTrack AS plt ON plt.PlaylistId = pl.PlaylistId
+GROUP BY pl.PlaylistId, pl.Name;
+
 --4. which sales agent made the most in sales in 2009?
 --5. how many customers are assigned to each sales agent?
 --6. which track was purchased the most since 2010?
