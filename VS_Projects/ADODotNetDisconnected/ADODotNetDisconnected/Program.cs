@@ -14,6 +14,7 @@ namespace ADODotNetDisconnected
             // disconnected architecture
             // rather than maximizing speed of getting the results
             // we want to min the time connection spends open
+            // usually bottleneck when there are a lot of people accessing the DB
 
             // still need NuGet package System.Data.SqlClient (for sql server)
             // and using directive "using System.Data;"
@@ -41,7 +42,7 @@ namespace ADODotNetDisconnected
                 // step 3. close the connection
                 connection.Close();
             }
-            // Step 4. Process the resu;ts
+            // Step 4. Process the results
             // not while connection is open, to get it closed ASAP
 
             // inside DataSet is some DataTables

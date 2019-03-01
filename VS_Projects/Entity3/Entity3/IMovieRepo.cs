@@ -7,6 +7,7 @@ namespace Entity3
 {
     interface IMovieRepo
     {
+        // implement IMovieRepo (or similar) and then have your console app test those methods.
         IEnumerable<Movie> GetAllMovies();
         IEnumerable<Genre> GetAllGenres();
         Movie GetMovieById(int id);

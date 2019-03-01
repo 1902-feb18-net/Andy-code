@@ -113,6 +113,7 @@ GO
 CREATE VIEW Movie.NewReleases AS 
 	SELECT * FROM Movie.Movie
 	WHERE ReleaseDate > '2019-01-01';
+GO
 
 SELECT * FROM Movie.NewReleases;
 
@@ -206,6 +207,7 @@ WHERE MovieId = 1;
 
 -- we can do triggers on INSERT, UPDATE, or DELETE
 -- they can be BEFORE, AFTER, or INSTEAD OF
+
 
 -- PROCEDURES
 -- procedure are like functions
