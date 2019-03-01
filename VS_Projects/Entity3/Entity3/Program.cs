@@ -37,9 +37,5 @@ namespace Entity3
 
             Console.ReadLine();
         }
-
-        void AddMovie(Movie movie) { }
-        void UpdateMovie(Movie movie) { }
-        void DeleteMovie(Movie movie) { }
     }
 }

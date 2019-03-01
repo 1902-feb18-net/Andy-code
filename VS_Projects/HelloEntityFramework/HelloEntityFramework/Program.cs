@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 
 namespace HelloEntityFramework
@@ -33,6 +34,12 @@ namespace HelloEntityFramework
         // if we scaffold with option "-DataAnnotations" (/"--data-annotations") we'll put the configs on the Movie
         // and Genre classes themselves with attributes
         // 3rd way to configure is convention based
+
+
+        // logging with Microsoft.Extensions.Logging from NuGet
+        // grab from training notes later
+        public static readonly LoggerFactory AppLoggerFactory =
+            new LoggerFactory(new[] (new ConsoleLoggerProvider(_, __) => true, true));
         static void Main(string[] args)
         {
             // note to self, i set my thing up wrong!!!
