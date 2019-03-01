@@ -41,6 +41,7 @@ CREATE TABLE dbo.EmpDetails
    )  
 GO  
 
+-- sample of altering
 ALTER TABLE dbo.Employee 
 	ADD CONSTRAINT FK_Dept_ID FOREIGN KEY (DeptID) REFERENCES dbo.Department (ID);
 
