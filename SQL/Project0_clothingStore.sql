@@ -37,7 +37,7 @@ CREATE TABLE Project0.Inventory (
 	StoreID INT NOT NULL,
 	ItemID INT NOT NULL, -- should FK to ItemProducts
 	ItemRemaining INT NOT NULL,
-	InventoryID INT NOT NULL UNIQUE
+	-- InventoryID INT NOT NULL UNIQUE
 );
 
 CREATE TABLE Project0.ItemProducts (
@@ -56,8 +56,8 @@ ALTER TABLE Project0.StoreOrder
 	ADD CONSTRAINT PK_Order_ID PRIMARY KEY CLUSTERED (OrderID);
 ALTER TABLE Project0.ItemProducts   
 	ADD CONSTRAINT PK_Item_ID PRIMARY KEY CLUSTERED (ItemID);
-ALTER TABLE Project0.Inventory
-	ADD CONSTRAINT PK_Inventory_ID PRIMARY KEY CLUSTERED (InventoryID);
+--ALTER TABLE Project0.Inventory
+--	ADD CONSTRAINT PK_Inventory_ID PRIMARY KEY CLUSTERED (InventoryID);
 
 
 -- add FK
@@ -91,16 +91,6 @@ ALTER TABLE Project0.OrderList
 --INSERT dbo.Employee(ID, FirstName, LastName, SSN, DeptId)  
 --    VALUES (1, 'Tina', 'Smith', 1111, 1) 
 
--- inserts for customer
-INSERT Project0.Customer(CustomerID, FirstName, LastName, DefaultStoreID)
-	VALUES(1, 'John', 'Lenin', 1);
-INSERT Project0.Customer(CustomerID, FirstName, LastName, DefaultStoreID)
-	VALUES(2, 'Steve', 'Gates', 2);
-INSERT Project0.Customer(CustomerID, FirstName, LastName, DefaultStoreID)
-	VALUES(3, 'Chew', 'Baka', 3);
-
-SELECT * FROM Project0.Customer;
-
 -- inserts for store
 INSERT Project0.Location(LocationID, StoreName)
 	VALUES(1, 'MallWart')
@@ -111,6 +101,16 @@ INSERT Project0.Location(LocationID, StoreName)
 
 SELECT * FROM Project0.Location;
 
+-- inserts for customer
+INSERT Project0.Customer(CustomerID, FirstName, LastName, DefaultStoreID)
+	VALUES(1, 'John', 'Lenin', 1);
+INSERT Project0.Customer(CustomerID, FirstName, LastName, DefaultStoreID)
+	VALUES(2, 'Steve', 'Gates', 2);
+INSERT Project0.Customer(CustomerID, FirstName, LastName, DefaultStoreID)
+	VALUES(3, 'Chew', 'Baka', 3);
+
+SELECT * FROM Project0.Customer;
+
 -- insert ItemProducts
 Insert Project0.ItemProducts(ItemID, ItemName, ItemDescription, ItemPrice)
 	VALUES(1, 'shirt', 'short sleeves t-shirt', 15.00)
@@ -120,6 +120,16 @@ Insert Project0.ItemProducts(ItemID, ItemName, ItemDescription, ItemPrice)
 	VALUES(3, 'shoes', 'standard shoes, not Wide', 55.00)
 
 SELECT * FROM Project0.ItemProducts;
+
+-- insert into StoreOrder
+INSERT Project0.StoreOrder(OrderID, StoreID, CustomerID, DatePurchased, Total)
+	VALUES (1, 1, 1, '2019-03-01 12:30:30', 185.00)
+INSERT Project0.StoreOrder(OrderID, StoreID, CustomerID, DatePurchased, Total)
+	VALUES (2, 2, 2, '2019-03-02 14:30:30', 115.00)
+INSERT Project0.StoreOrder(OrderID, StoreID, CustomerID, DatePurchased, Total)
+	VALUES (3, 3, 3, '2019-03-02 15:30:30', 55.00)
+
+SELECT * FROM Project0.StoreOrder;
 
 -- insert into OrderList
 Insert Project0.OrderList(OrderID, ItemID, ItemBought)
@@ -132,3 +142,29 @@ Insert Project0.OrderList(OrderID, ItemID, ItemBought)
 	VALUES(2, 1, 3)
 Insert Project0.OrderList(OrderID, ItemID, ItemBought)
 	VALUES(2, 2, 2)
+Insert Project0.OrderList(OrderID, ItemID, ItemBought)
+	VALUES(3, 3, 1)
+
+SELECT * FROM Project0.OrderList;
+
+-- insert into inventory
+INSERT Project0.Inventory(StoreID, ItemID, ItemRemaining)
+	VALUES(1, 1, 50)
+INSERT Project0.Inventory(StoreID, ItemID, ItemRemaining)
+	VALUES(1, 2, 20)
+INSERT Project0.Inventory(StoreID, ItemID, ItemRemaining)
+	VALUES(1, 2, 10)
+INSERT Project0.Inventory(StoreID, ItemID, ItemRemaining)
+	VALUES(2, 1, 50)
+INSERT Project0.Inventory(StoreID, ItemID, ItemRemaining)
+	VALUES(2, 2, 20)
+INSERT Project0.Inventory(StoreID, ItemID, ItemRemaining)
+	VALUES(2, 2, 10)
+INSERT Project0.Inventory(StoreID, ItemID, ItemRemaining)
+	VALUES(3, 1, 50)
+INSERT Project0.Inventory(StoreID, ItemID, ItemRemaining)
+	VALUES(3, 2, 20)
+INSERT Project0.Inventory(StoreID, ItemID, ItemRemaining)
+	VALUES(3, 2, 10)
+
+Select * FROM Project0.Inventory;
