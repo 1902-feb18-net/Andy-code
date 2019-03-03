@@ -159,17 +159,7 @@ SELECT FirstName FROM Employee --67 with dupes, 63 without
 -- SET JOIN EXERCISES!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 --1. which artists did not make any albums at all?
-SELECT Artist.Name
-FROM Artist
-WHERE ArtistId = (
-	SELECT ArtistId
-	FROM Album AS a1
-	WHERE 
-	--WHERE LEN(Title) >= ALL (SELECT LEN(Title) FROM Album)
-)
-
 --2. which artists did not record any tracks of the Latin genre?
-
 --3. which video track has the longest length? (use media type table)
 --4. find the names of the customers who live in the same city as the boss employee (the one who reports to nobody)
 --5. how many audio tracks were bought by German customers, and what was the total price paid for them?
