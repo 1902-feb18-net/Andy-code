@@ -1,0 +1,31 @@
+main {
+    max-width: 500px;
+    margin: 50px auto;
+    background-color: #fcffb7;
+    padding-left: 10px;
+    padding-right: 100px;
+    border: 3px solid red;
+    font-size: 1.3em;
+}
+
+.someImage {
+    border: 5px solid orange;
+    width: 100%;
+    height: 20vw;
+}
+
+.scrollText {
+    margin: 20px 0;
+    width: 92%;
+    padding-left: 20px;
+    padding-right: 20px;
+    border: 5px dashed orange;
+    height: 200px;
+    overflow-y: scroll; 
+    background-color: yellow;
+}
+
+.scrollText .sentence:first-child {
+    font-weight: bold; 
+    text-decoration: underline;
+}
