@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="basicHtmlExercise.css">
+    <!-- <script src="main.js"></script> -->
+</head>
+<body>
+    <img src="https://revature.com/wp-content/uploads/2017/08/rev-logo-2.png" height="300" alt="revature logo">
+    <h1>About</h1>
+    <p>This site is not wonderful</p>
+    <h2>Our Locations</h2>
+    <ul>
+        <li>USA</li>
+        <ul>
+            <li><a href="#">New York</a></li>
+            <li><a href="#">Columbus</a></li>
+            <li><a href="#">Austin</a></li>
+            <li>Philly</li>
+        </ul>
+        <li>World</li>
+        <ul>
+            <li>Ottawa</li>
+            <li>Sydney</li>
+        </ul>
+    </ul>
+
+    <h2>Upcoming Classes</h2>
+    <Table>
+        <thead>
+            <th>Location</th>
+            <th>Topic</th>
+        </thead>
+        <tbody>
+            <tr>
+                <td>New York</td>
+                <td>JavaScript and JQuery</td>
+            </tr>
+            <tr>
+                <td>San Francisco</td>
+                <td>HTML &amp; CSS</td>
+            </tr>
+        </tbody>
+    </Table>
+
+    <h2>Sign Up</h2>
+
+    <form action="POST">
+        <p>
+            <label>
+                name: <input type="text" name="name">
+            </label>
+        </p>
+        <p>
+            <label>
+                email: <input type="email" name="email">
+            </label>
+        </p>
+        <p>
+            <label>
+                location: 
+                <select>
+                    <option>Reston</option>
+                    <option>Tampa</option>
+                    <option selected">San Francisco</option>
+                </select>
+            </label>
+        </p>
+        <fieldset>
+            <legend>Gender</legend>
+            <label>
+                Male <input type="radio" name="gendert" value="m">
+            </label>
+            <label>
+                Female <input type="radio" name="gender" value="f">
+            </label>
+        </fieldset>
+        <p>Experience:</p>
+        <textarea rows="4" cols="50"></textarea>
+        <div><input type="submit"></div>
+    </form>
+</body>
+</html>
