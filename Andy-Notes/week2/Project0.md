@@ -11,8 +11,7 @@ February 18 2018 Arlington .NET / Nick Escalona
 * display order history sorted by earliest, latest, cheapest, most expensive
 * display some statistics based on order history
 * search customers by name
-* save all data to disk in XML or JSON format
-* load all data from disk
+* persistent data (SQL)
 * input validation
 * exception handling
 * logging
@@ -24,15 +23,21 @@ February 18 2018 Arlington .NET / Nick Escalona
 * contains all business logic
 * contains entity classes (customer, order, store, product, etc.)
 * has no dependency on UI or any input/output considerations
+* repository pattern (whether implemented here or in the data access project) abstracts EF-based data access
 
 ### user interface
 * interactive console application
 * has only display- and input-related code
 * low-priority component, will be replaced when we move to project 1
 
+### data access
+* class library
+* contains scaffolded EF DbContext
+* if it has DTOs, no business logic should be on them
+
 ### test
 * use TDD for some of the application
-* focus on unit testing business logic; testing the console app is very low priority
+* focus on unit testing business logic
 
 ## object model
 ### customer
@@ -40,10 +45,11 @@ February 18 2018 Arlington .NET / Nick Escalona
 * has a default store location to order from
 * cannot place more than one order from the same location within two hours
 
-### StoreOrder
+### order
 * has a store location
 * has a customer
 * has an order time (when the order was placed)
+* multiple types of products can be ordered at once
 * must have some additional business rules
 
 ### location
@@ -57,5 +63,7 @@ February 18 2018 Arlington .NET / Nick Escalona
 
 ## technologies
 * C#/.NET
+* Entity Framework
+* Azure SQL DB
 * xUnit, NUnit, or MSTest
 * Serilog or NLog

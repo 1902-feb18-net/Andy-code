@@ -1,0 +1,233 @@
+<!-- 
+    
+This is a comment
+
+-->
+<!-- put our HTML in .html or .htm files -->
+
+<!-- the first part is doc type definition (DTD)-->
+<!-- tells the browser this is html, and what version -->
+<!-- this minimal doctupe is interpreted to mena -->
+<!-- this is HTML 5, use latest HTML 5 behavior -->
+<!-- w/o doctype, browser enters compatibility mode for old HTML -->
+<!DOCTYPE html>
+<!-- doctype is not an element, but is required -->
+
+<!-- the root element for an HTMl page is the HTML element, sometimes called
+    the document element
+-->
+<html lang="en">
+
+<!-- The html has two child elements: head and body -->
+
+<head>
+    <!-- Head is for metdata about the page and not content -->
+
+    <!-- most of the metadata comes in with meta elements -->
+    <!-- sets char set of the page to UTF-8 (lets user have special symbols) -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- title element gives the name of tab/window -->
+    <title>Applessss</title>
+    <!-- sets some initial viewport stuff for mobile -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- importing an external JS script -->
+    <!-- <link rel="stylesheet" type="text/css" media="screen" href="main.css"> -->
+    <!-- importing an external JS script -->
+    <!-- <script src="main.js"></script> -->
+</head>
+<body>
+    <!-- body is for all the actual page contents -->
+    Banana
+    <!-- HTML does not care about white space -->
+
+    Pears
+    <!-- paragraph, and linebreaks are <br> -->
+    <p>HELLO WORLD, APPLES ARE BAD</p> 
+    <p>HELLO WORLD, PINEAPPLES ARE Good</p>
+    <!-- section headers -->
+    <h1>big header</h1>
+    <h2>Smaller header</h2>
+    <h6>up to h6 only</h6>
+
+    <!-- images -->
+    <img src="https://revature.com/wp-content/uploads/2017/08/rev-logo-2.png" height="300">
+
+    <!-- link 
+        href is for where to go
+        target for where to put new page
+    -->
+    <a href="https://www.microsoft.com/en-us/" target="_blank">Some link</a>
+
+    <!-- lists -->
+    <!-- ol ordered lists are numbered -->
+    <ol>
+        <li>Apples</li>
+        <li>Pears</li>
+        <li>bananas</li>
+    </ol>
+    <!-- ul unordered lists are bullet -->
+    <ul>
+        <li>apples</li>
+        <li>pears</li>
+        <li>bananas</li>
+    </ul>
+
+    <p>old fashioned poor separtion of concerns <i>italic</i> <b>for bold</b>
+        and <br> for breaks
+    </p>
+
+    <p>better separation of concern <em>emphasis</em>, <strong>strong</strong>
+        and <u>for underline</u> still
+    </p>
+
+    <blockquote>
+        indented paragraph of quotation
+    </blockquote>
+
+    <!-- most HTML elements are by default either blocks or inline -->
+    <!-- inline elements do not lay claim to their own vertical space on the page
+        e.g. strong, em,u, a, img
+        block elements claim some vetical space all to themselves
+        e.g. p, ol, ul, li, h1
+    -->
+    <div>
+        div (division) is for generic block element
+        <span>
+            for generic inline elements
+        </span>
+    </div>
+
+    <!-- divs and span especially we pu ids and classes on them so we can target them from CSS, JS
+    otherwise they're not doing much -->
+
+    <Table>
+        <!-- for header rows -->
+        <thead>
+            <!-- row -->
+            <tr>
+                <!-- table data for colls in row -->
+                <td>A</td>
+                <td>D</td>
+            </tr>
+        </thead>
+        <!-- for rest of the rows -->
+        <tbody>
+            <tr>
+                <td>A1</td>
+                <td>A2</td>
+            </tr>
+            <tr>
+                <td>B1</td>
+                <td>B2</td>
+            </tr>
+        </tbody>
+    </Table>
+    
+    <!-- 
+        including special chars 
+        since VSCode is saving this file at UTF-8, and declared in head, 
+        I can just include any unicode chars directly
+    -->
+    <p>😀</p>
+
+    <!-- we also have char references in HTML -->
+    <p>&lt; &gt; &amp;</p>
+    <!-- aka HTML code -->
+    <!-- for other stuff, prefer directly embedding the unicode char, unless whitespace -->
+    &nbsp;
+    <!-- non breaking space, a space that the browser isn't allowed to do a auto line break on -->
+
+    <!-- in additionto the named chars, we have numeric char references -->
+    <!-- decimal unicode -->
+    &#1274
+    <!-- hex unicode -->
+    &#x201a5
+
+    <!-- 
+        select list aka dropdown 
+        choose default with selected="selected"
+        equiv shorthand
+    -->
+    <select>
+        <option>Reston</option>
+        <option>Tampa</option>
+        <option selected">Arlington</option>
+    </select>
+
+    <!-- new elements in HTML5 -->
+    <!-- 
+        several structural elements 
+    -->
+    <main></main>
+    <article></article>
+    <section></section>
+    <header></header>
+    <footer></footer>
+    <aside></aside>
+    <nav></nav>
+    <!-- before we'd do this -->
+    <div class="header"></div>
+    <!-- we use these new things in place of divs -->
+
+    <!-- used to use plugins on the web, especially flash (bad design) -->
+    <!-- browsers should be the one to take control -->
+    <!-- different a/v codecs: mp3, wav, h.234 -->
+    <!-- let's the page offer several options and let's browser
+        pick which one it knows how to play
+    -->
+    <audio></audio>
+    <!-- we also have accessibility stuff
+        support for captions
+    -->
+    <video></video>
+    <!-- for flashgames/animations stuffs -->
+    <canvas></canvas>
+
+    <!-- HTML5 added lots of accessibility atttributes 
+        (ARIA) Accessible Rich Internet Applications 
+        make web content and web applications 
+        (especially those developed with JavaScript) more
+         accessible to people with disabilities.
+    -->
+    
+    <!-- forms -->
+    <!-- method: GET/POST -->
+    <!-- action: where to send form data 
+        default: current loaded URL
+    -->
+    <!-- placeholder is an alternative to using labels -->
+    <form action="POST">
+        <!-- inside form we use inputs -->
+        name:
+         <input 
+            type="text" 
+            name="name" 
+            placeholder="type in your name"
+            required
+            patterns="[Aa][Nn][Dd][Yy] .*"
+        >
+
+        <!-- we have a variety of validation attribute:
+            e.g. required
+            required, pattern, minlength, maxlength, 
+        -->
+        <label for="lastInput">Last name:</label>
+        <input type="text" name="last" id="lastInput">
+        <label>
+            Middle name: 
+            <input type="text" name="middle">
+        </label>
+
+        <input type="submit">
+
+    </form>
+
+    <form action="http://www.google.com/search" method="get" target="_blank">
+        <input type="text" name="q" placeholder="Google Search"/>
+        <input type="submit" value="search" />
+        <!-- can also do -->
+        <!-- also have <button></button> -->
+    </form>
+</body>
+</html>
