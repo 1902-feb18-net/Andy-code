@@ -26,6 +26,7 @@ namespace MoviesSite.App.Controllers
         // GET: Movies/Details/5
         public ActionResult Details(int id)
         {
+            //MovieRepo.MovieById(id);
             return View();
         }
 
@@ -62,23 +63,24 @@ namespace MoviesSite.App.Controllers
         // POST: Movies/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, Movie movie)
         {
             try
             {
                 // TODO: Add update logic here
-
+                MovieRepo.Update(id, movie);
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View();
+                return View(movie);
             }
         }
 
         // GET: Movies/Delete/5
         public ActionResult Delete(int id)
         {
+            MovieRepo.DeleteMovie(id);
             return View();
         }
 
