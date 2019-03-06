@@ -33,9 +33,9 @@ namespace MoviesSite.Lib
         }
 
         public Genre GenreById(int id)
-        {   
+        {
             // fill out later
-            return null;
+            return _genreData.First(g => g.Id == id);
         }
 
         public void Create(Movie movie)
@@ -45,11 +45,25 @@ namespace MoviesSite.Lib
             _moviesData.Add(movie);
         }
 
+        public void CreateMovie(Movie movie)
+        {
+            if (_moviesData.Count == 0)
+            {
+                movie.Id = 0;
+            }
+            else
+            {
+                int id = _moviesData.Max(m => m.Id) + 1;
+                movie.Id = id;
+
+            }
+            _moviesData.Add(movie);
+        }
+
         public void Update(int id, Movie movie)
         {
             var oldMovie = MovieById(id);
             oldMovie.Title = movie.Title;
-            //oldMovie.genre = movie.genre.Id;
             oldMovie.genre = GenreById(movie.genre.Id);
             oldMovie.DateReleased = movie.DateReleased;
         }
