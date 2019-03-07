@@ -1,4 +1,5 @@
-﻿@model MoviesSite.Lib.Movie
+﻿@model MoviesSite.App.Models.MovieViewModel
+@* apply this to all the other views *@
 
 @{
     ViewData["Title"] = "Create";
@@ -12,26 +13,34 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                 @* 
-                     The template gives us label tag helper
-                     similar effect to @Html.DisplayNameFor except a <label>
-                 *@
-                <label asp-for="Id" class="control-label"></label>
-                 @* template gives us input tag helper *@
-                 @* equiv to @HTML.EditorFor *@
-                <input asp-for="Id" class="form-control" />
-                <span asp-validation-for="Id" class="text-danger"></span>
-            </div>
+            @*<div class="form-group">*@
+            @*
+        The template gives us label tag helper
+        similar effect to @Html.DisplayNameFor except a <label>
+            *@
+            @*<label asp-for="Id" class="control-label"></label>*@
+            @* template gives us input tag helper *@
+            @* equiv to @HTML.EditorFor *@
+            @*<input asp-for="Id" class="form-control" />*@
+            @*<span asp-validation-for="Id" class="text-danger"></span>*@
+            @*</div>*@
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
                 <input asp-for="Title" class="form-control" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DateReleased" class="control-label"></label>
-                <input asp-for="DateReleased" class="form-control" />
-                <span asp-validation-for="DateReleased" class="text-danger"></span>
+                <label asp-for="ReleaseDate" class="control-label"></label>
+                <input asp-for="ReleaseDate" class="form-control" />
+                <span asp-validation-for="ReleaseDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                @* use a dropwn (<select>) to choose a genre
+            think about what the generate HTML ultimately needs...
+            needs to know the names of every genre
+                *@
+                <label asp-for="Genre" class="control-label"></label>
+                <select asp-for="Genre.Id" asp-items="new SelectList(SOMETHING!!!)"></select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

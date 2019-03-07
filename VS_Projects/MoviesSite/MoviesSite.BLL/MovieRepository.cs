@@ -3,18 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MoviesSite.Lib
+namespace MoviesSite.BLL
 {
     public class MovieRepository
     {
         private readonly IList<Movie> _moviesData;
         private readonly IList<Genre> _genreData;
 
-        // ctor + Tab TAb makes constructors
         public MovieRepository(IList<Movie> moviesData, IList<Genre> genreData)
         {
             _moviesData = moviesData;
             _genreData = genreData;
+        }
+
+        public IEnumerable<Genre> AllGenres()
+        {
+            return _genreData.ToList();
         }
 
         public IEnumerable<Movie> AllMovies()
@@ -24,7 +28,7 @@ namespace MoviesSite.Lib
 
         public IEnumerable<Movie> AllMoviesWithGenre(Genre genre)
         {
-            return _moviesData.Where(m => m.genre.Id == genre.Id).ToList();
+            return _moviesData.Where(m => m.Genre.Id == genre.Id).ToList();
         }
 
         public Movie MovieById(int id)
@@ -34,15 +38,7 @@ namespace MoviesSite.Lib
 
         public Genre GenreById(int id)
         {
-            // fill out later
             return _genreData.First(g => g.Id == id);
-        }
-
-        public void Create(Movie movie)
-        {
-            int id = _moviesData.Max(m => m.Id) + 1;
-            movie.Id = id;
-            _moviesData.Add(movie);
         }
 
         public void CreateMovie(Movie movie)
@@ -55,27 +51,21 @@ namespace MoviesSite.Lib
             {
                 int id = _moviesData.Max(m => m.Id) + 1;
                 movie.Id = id;
-
             }
             _moviesData.Add(movie);
         }
 
-        public void Update(int id, Movie movie)
+        public void UpdateMovie(int id, Movie movie)
         {
             var oldMovie = MovieById(id);
             oldMovie.Title = movie.Title;
-            oldMovie.genre = movie.genre is null ? null : GenreById(movie.genre.Id);
+            oldMovie.Genre = movie.Genre is null ? null : GenreById(movie.Genre.Id);
             oldMovie.DateReleased = movie.DateReleased;
         }
 
         public void DeleteMovie(int id)
         {
             _moviesData.Remove(MovieById(id));
-        }
-
-        public object AllGenres()
-        {
-            throw new NotImplementedException();
         }
     }
 }
