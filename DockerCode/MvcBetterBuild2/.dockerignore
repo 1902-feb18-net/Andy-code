@@ -1,0 +1,6 @@
+# skips when building
+# syntax similar to .gitignore
+bin/
+obj/
+Dockerfile
+.vscode/
