@@ -12,15 +12,15 @@ namespace MyServices
     public interface IService2
     {
         [OperationContract]
-        void GetQuestion();
+        Question GetQuestion(List<string> someList);
 
         [OperationContract]
-        void AddQuestion();
+        void AddQuestion(List<string> someList, string someItem);
 
         [OperationContract]
-        void DeleteQuestion(int Id);
+        void DeleteQuestion(List<string> someList, int Id);
 
         [OperationContract]
-        void EditQuestion(int Id);
+        void EditQuestion(List<string> someList, int Id, string someItem);
     }
 }

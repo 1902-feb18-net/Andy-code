@@ -17,6 +17,8 @@ namespace MyServices
         public string category { get; set; }
         [DataMember]
         public int Rating { get; set; }
+        [DataMember]
+        public string Questions { get; set; }
 
         // without [DateMember] attribute, this prop is not serialized/deserialized 
         // across servce connection

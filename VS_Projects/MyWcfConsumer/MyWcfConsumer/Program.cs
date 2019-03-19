@@ -29,6 +29,8 @@ namespace MyWcfConsumer
                 Console.WriteLine("enter number: ");
                 if (int.TryParse(Console.ReadLine(), out var num))
                 {
+                    // check Nick's note to see how he used TransactionScope
+                    //using (var trans = new TransactionScope())
                     var doubled = await client.DoubleNumberAsync(num);
                     Console.WriteLine($"Doubled: {doubled}");
                 }
@@ -41,6 +43,8 @@ namespace MyWcfConsumer
                 // right click serviceReference1 and update it
                 Question question = client.GetQuestion(1);
                 var question2 = client.GetQuestion(2);
+
+
                
             }
 

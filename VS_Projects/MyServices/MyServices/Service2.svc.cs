@@ -11,25 +11,33 @@ namespace MyServices
     // NOTE: In order to launch WCF Test Client for testing this service, please select Service2.svc or Service2.svc.cs at the Solution Explorer and start debugging.
     public class Service2 : IService2
     {
-        public void GetQuestion()
+        public static List<string> returnedList = new List<string>();
+
+        public void DeleteQuestion(List<string> someList, int Id)
         {
-            throw new NotImplementedException();
+            returnedList = someList;
+            returnedList.RemoveAt(Id);
         }
 
-        public void AddQuestion()
+        public void EditQuestion(List<string> someList, int Id, string someItem)
         {
-            throw new NotImplementedException();
+            returnedList = someList;
+            returnedList[Id] = someItem;
         }
 
-        public void DeleteQuestion(int Id)
+        public List<string> GetQuestion(List<string> someList)
         {
-            throw new NotImplementedException();
+            for(int i = 0; i < someList.Count; i++)
+            {
+                returnedList[i] = someList[i]; 
+            }
+            return returnedList;
         }
 
-        public void EditQuestion(int Id)
+        public void AddQuestion(List<string> someList, string someItem)
         {
-            throw new NotImplementedException();
+            returnedList = someList;
+            returnedList.Add(someItem);
         }
-
     }
 }
