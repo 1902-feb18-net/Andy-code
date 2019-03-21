@@ -39,5 +39,10 @@ namespace MyServices
             returnedList = someList;
             returnedList.Add(someItem);
         }
+
+        Question IService2.GetQuestion(List<string> someList)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

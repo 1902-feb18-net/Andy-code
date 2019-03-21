@@ -21,4 +21,9 @@ namespace CharacterRestService
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>();
     }
+
+    //static async Test PrintCharAsynx(string url, mttpClient httm model compare)
+    //{
+    //    //// falling asleep
+    //}
 }

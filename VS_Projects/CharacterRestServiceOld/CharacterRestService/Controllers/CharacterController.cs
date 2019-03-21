@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CharacterRestService.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CharacterRestService.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize] // [Authorize] on whole controller
     [ApiController]
     public class CharacterController : ControllerBase
     {
@@ -22,63 +20,54 @@ namespace CharacterRestService.Controllers
 
         // GET: api/Character
         [HttpGet]
-        [AllowAnonymous]    // for auth more specific attr overrides less specific
-                            // this undows the [Authorize] on the controller
-        //[Produces("application/xml")]
+        [ProducesResponseType(typeof(Character), StatusCodes.Status200OK)]
         public IEnumerable<Character> Get()
         {
             return _data;
             // whenever an action method returns something that's not an IActionResult
-            // ... it's automatically wrapped in 200 OK response.
+            // ... it's auto wrapped in 200 OK res
         }
 
-
-        // GET: api/Character/1
-        [HttpGet("{id}")]
-        [Authorize] //authorize by itself means, any logged in user (any1 authenticated)
-                    // can access this action method
-        //[Produces("application/xml")]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<Character> GetById(int id)
+        // Nick did some fast recode with naming routes with rename in method and then edit accordingly 
+        // wasnt able to follow
+        [HttpGet("{id}", Name = "GetById")]
+        [ProducesResponseType(typeof(Character), StatusCodes.Status200OK)]
+        public ActionResult<Character> Get(int id)
         {
-            // using fancy pattern matching syntax
-            if (_data.FirstOrDefault(x => x.Id == id) is Character character)
+            if (_data.FirstOrDefault(x => x.Id == id) is var character)
             {
                 return character;
             }
-
             return NotFound();
         }
 
-        // return types should generally either be IActionResult or some subtype of that.
+        // return types should generally be IActionResult or some subtype of that,
         // or ActionResult<type-of-data-in-body>
 
         // POST: api/Character
         [HttpPost]
         [ProducesResponseType(typeof(Character), StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(Character), StatusCodes.Status400BadRequest)]
         public IActionResult Post([FromBody, Bind("Name")] Character character)
         {
-            // there was some "overposting" vulnerability here... i do not want client to be able
-            // to set the ID. either i can make sure to ignore that value if he sends it
-            // or i can explicitly not bind it.
-
+            // some overposting vulnerability here... I do not want client to be able to set ID.
+            // either  I can make sure to ignore that value if he sends it
+            // or can explicitly not bind it
             var newId = _data.Max(x => x.Id) + 1;
             character.Id = newId;
             _data.Add(character);
 
-            return CreatedAtAction(nameof(GetById), new { id = newId }, character);
+            return CreatedAtRoute("GetById", new { id = newId }, character);
         }
 
-        [HttpPut("{id}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpPut]
+        [ProducesResponseType(typeof(Character), StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(Character), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(Character), StatusCodes.Status400BadRequest)]
         public IActionResult Put(int id, [FromBody, Bind("Name")] Character character)
         {
-            // implementation choice, whether PUT on nonexistent resource is
-            // successful or error.
-            if (_data.FirstOrDefault(x => x.Id == id) is Character existing)
+            // implementation choice, whether PUT on nonexistent res is successful or error
+            if (_data.FirstOrDefault(x => x.Id == id) is var existing)
             {
                 existing.Name = character.Name;
                 return NoContent(); // 204
@@ -87,11 +76,12 @@ namespace CharacterRestService.Controllers
         }
 
         [HttpDelete("{id}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(Character), StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(Character), StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult Delete(int id)
         {
-            if (_data.FirstOrDefault(x => x.Id == id) is Character existing)
+            if (_data.FirstOrDefault(x => x.Id == id) is var existing)
             {
                 _data.Remove(existing);
                 return NoContent(); // 204

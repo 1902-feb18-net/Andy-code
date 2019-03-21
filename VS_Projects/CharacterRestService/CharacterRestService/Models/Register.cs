@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace CharacterRestService.Models
 {
-    public class Character
+    public class Register
     {
-        public int Id { get; set; }
-
-        [Required]
-        public string Name { get; set; }
+        [EmailAddress]
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public DateTime Birthday { get; set; }
     }
 }
