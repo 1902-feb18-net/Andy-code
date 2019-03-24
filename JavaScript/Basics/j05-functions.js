@@ -3,7 +3,7 @@
 // callback functions
 
 // similar to delegate/func/etc in C#
-// we can write code that accept sother code as param
+// we can write code that accept other code as param
 // in order to either
 // 1. provide some polymorphism/extensibility to code
 // (gives caller some input on what will be done)
@@ -76,6 +76,7 @@ console.log(counter2()); // 1
 // it's really a concept from CS
 // .. as programmers, we are very loose about
 // the meaning of closure
+// programmers don't have girlfriends
 
 // in JS, all these <script> content are concatenated
 // we really try to avoid putting things in

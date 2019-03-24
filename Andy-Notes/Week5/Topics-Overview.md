@@ -1,6 +1,6 @@
 # Web Services Topics
 - SOA
-	- patterns
+	- patterns (skipped)
 	- principles
 - SOAP
 	- message
