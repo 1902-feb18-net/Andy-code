@@ -5,11 +5,13 @@ var MtgService = /** @class */ (function () {
         this.url = url;
     }
     MtgService.prototype.getByName = function (name, onSuccess) {
-        var fragment = '/cards/named';
+        var fragment = "/cards/named";
         var url = "" + this.url + fragment + "?fuzzy=" + name;
-        fetch(this.url).then(function (r) { return r.json(); })
+        fetch(url)
+            .then(function (r) { return r.json(); })
             .then(onSuccess)
-            .catch(function (error) { return console.log(error); });
+            .catch(console.log);
+        console.log("set up fetch");
     };
     return MtgService;
 }());

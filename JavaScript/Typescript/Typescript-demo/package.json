@@ -2,11 +2,10 @@
   "name": "typescript-demo",
   "version": "1.0.0",
   "description": "",
-  "main": "main.js",
   "private": true,
   "scripts": {
     "build": "tsc && webpack",
-    "test": "echo \"All Tests passed. great code!\""
+    "test": "echo \"All tests passed, great code\""
   },
   "author": "",
   "license": "ISC",

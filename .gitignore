@@ -560,3 +560,6 @@ $RECYCLE.BIN/
 # End of https://www.gitignore.io/api/sonar,csharp,windows,sonarqube,visualstudio,visualstudiocode
 # ignore secret config files
 SecretConfiguration.cs
+
+node_modules/
+bin/*.js

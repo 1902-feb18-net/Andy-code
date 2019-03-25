@@ -5,12 +5,15 @@ var Main = /** @class */ (function () {
     function Main() {
     }
     Main.Main = function () {
+        console.log("main");
         document.addEventListener('DOMContentLoaded', function () {
-            var mtgService = new mtgservice_1.MtgService("https://api.scryfall.com/");
+            console.log("dom content loaded");
+            var mtgService = new mtgservice_1.MtgService("https://api.scryfall.com");
             var textField = document.getElementById('textField');
             var button = document.getElementById('button');
             var output = document.getElementById('output');
             button.addEventListener('click', function () {
+                console.log("clicked button");
                 mtgService.getByName(textField.value, function (card) {
                     output.textContent = card.name;
                 });
