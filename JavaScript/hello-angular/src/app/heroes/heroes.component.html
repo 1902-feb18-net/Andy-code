@@ -1,0 +1,29 @@
+<h2>My Heroes</h2>
+<ul class="heroes">
+  <!-- The *ngFor is Angular's repeater directive. It repeats the host element for each element in a list. -->
+  <!-- This is an example of Angular's event binding syntax. using click -->
+
+  <!-- <li *ngFor="let hero of heroes" 
+    [class.selected]="hero === selectedHero" 
+    (click)="onSelect(hero)"> -->
+  <li *ngFor="let hero of heroes">
+    <a routerLink="/detail/{{hero.id}}">
+      <span class="badge">{{hero.id}}</span>{{hero.name}}
+    </a>
+  </li>
+</ul>
+
+<!-- The component should only display the selected hero details if the selectedHero exists. -->
+<!-- <div *ngIf="selectedHero">
+  <h2>{{selectedHero.name | uppercase}} Details</h2>
+  <div><span>id: </span>{{selectedHero.id}}</div>
+  <div>
+    <label>
+      name:
+      <input [(ngModel)]="hero.name" placeholder="name" />
+    </label>
+  </div>
+</div> -->
+
+<!-- [hero]="selectedHero" is an Angular property binding. -->
+<!-- <app-hero-detail [hero]="selectedHero"></app-hero-detail> -->
