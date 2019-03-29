@@ -1,37 +1,39 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule} from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { PokemonComponent } from './pokemon/pokemon.component';
 import { HttpClientModule } from '@angular/common/http';
+import { CharacterComponent } from './character/character.component';
+import { LoginComponent } from './login/login.component';
 
-// decorators provides metadata that Angular needs
-// to define this class as a (ng) module
+// decorators provide metadata that Angular needs
+// to define this class as a (ng) module.
+
 @NgModule({
-  // every component needs to be delcared in one module
+  // every component needs to be declared in one module.
   declarations: [
-    AppComponent,
-    PokemonComponent // root component
+    AppComponent, // root component
+    PokemonComponent, CharacterComponent, LoginComponent
   ],
-  // in "imports", we list all the other modules that we want components
-  // and directives from
+  // in "imports", we list all the other modules that we want components/directives
+  // from.
   imports: [
     BrowserModule,
     FormsModule, // for ngModel
-    AppRoutingModule,
-    HttpClientModule
-    // to access something from some 3rd party npm package
-    // or angular npm packages
+    HttpClientModule,
+    AppRoutingModule
+    // to access something from some third party npm package
+    // (or angular's npm packages!)
     // 1. npm install <package>
-    // 2. TS import it into the module file that needs it
+    // 2. TS-import it into the module file that needs it
     // 3. put it in the "imports" array (ng-import)
-    // 
   ],
   providers: [],
-  // sepcifically our root module should have a BS line
+  // specifically our root module should have a bootstrap line
   // which points to the root component
-  bootstrap: [AppComponent] // this defines our root component
+  bootstrap: [AppComponent] // root component
 })
 export class AppModule { }

@@ -1,18 +1,21 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <div>
+  <!-- routerLink comes from router module -->
   <a routerLink="/pokemon">Pokemon</a>
+  <a routerLink="/char">Characters</a>
+  <a routerLink="/login">Log In</a>
 </div>
 
 <div style="text-align:center">
   <h1>
-    <!-- this is "interpolation" syntax -->
-    <!-- in angular templates, we can do {{}} -->
-    <!-- and put a "template expression" inside -->
-    <!-- that can be any JS expression... its value will be converted to string-->
-    <!-- and HTML enoded -->
+    <!-- this is "interpolation" syntax. -->
+    <!-- in angular templates, we can do {{ }} -->
+    <!-- and put a "template expression" inside. -->
+    <!-- that can be any JS expression... its value will be converted to string -->
+    <!-- and HTML-encoded -->
 
     <!-- this will be dynamic... if something changes the value of "title" -->
-    <!-- in my component object.. the view will change to reflect that -->
+    <!-- in my component object... the view will change to reflect that. -->
     Welcome to {{ title }}!
   </h1>
 </div>
