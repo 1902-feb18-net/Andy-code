@@ -1,5 +1,8 @@
 # Commands to run on terminal
 
+## Main Repo
+- https://github.com/revaturexyz
+
 ## Deployed URL
 - https://revaturexyz-housing-dev.southcentralus.cloudapp.azure.com/
 - https://revaturexyz-housing-dev.southcentralus.cloudapp.azure.com/api/users
@@ -25,6 +28,16 @@ https://192.168.99.100:9031/api/rooms
 https://192.168.99.100:9041/api/batches
 
 https://192.168.99.100:9021/api/forecast/snapshots
+
+## To switch from deployed to testing locally
+The configuration "Settings:ServiceHubConnection" decides where the service hub
+is located. The default in Development is to connect to the deployed APIs
+on Azure. To temporarily override this, add a line to the .windev file under
+the other environment variables:
+
+```
+      - Settings__ServiceHubConnection=DockerMachineHttp
+```
 
 ## Testing interface-web-forecast
 you need to run these commands everytime you make changes to the angular code
@@ -64,7 +77,18 @@ overridden in the dockerup.windev.yml file.)
 
 docker run --rm -d -p 5432:5432 postgres
 
-nick fixed so https worked, check it out
+The configuration "Settings:ServiceHubConnection" decides where the service hub
+is located. The default in Development is to connect to the deployed APIs
+on Azure. To temporarily override this, change appsettings.Development.json,
+or add to user secrets:
+
+```
+{
+  "Settings": {
+    "ServiceHubConnection": "DockerMachineHttp"
+  }
+}
+```
 
 
 ## within terminal to pull all

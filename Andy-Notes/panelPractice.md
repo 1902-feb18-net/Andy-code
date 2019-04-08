@@ -134,6 +134,8 @@ IEnumerable<T> is great for working with sequences that are iterated in-memory. 
 
 The main thing is where the filter is applied. IQueryable has the filter on db side and IEnumerable has on client side. If working in-memory IEnumerable is better. If connected to a db then IQueryable is better as it reduced network traffic and uses power of SQL language. 
 
+---
+
 
 ## Week 3: ASP.NET MVC, HTML, CSS
 ### What is new in HTML5 compared to the previous version?
@@ -206,3 +208,45 @@ HTML helpers are invoked as methods that are mixed with HTML inside your Razor v
 
 ### What is a dependency injection and its types?
 Dependency injection is a software design pattern which is a technique to achieve inversion of control between classes and their dependencies. Dependency is any object that another object requires. So to achieve DI we make use of an interface to abstract the dependency implementation. Registering the dependency in a service container(IServiceProvider) that are registered in the app's Startup.ConfigureServices method. Or injecting of the services into the constructor of the class where it's used. 
+
+---
+
+## Week 4: DevOps, CI/CD, Azure, Docker
+wowzers, it takes so long per each week
+
+### What is SDLC and the two main types?
+Stands for Software Development Life Cycle, it is a process used by software industry to design, develop and test software. The two main types are waterfall and iterative methods. waterfall essentially is a one track process that goes through the planning, gathering resources, development, testing, and finally deployment without ever going back to the previous phase. Benefits are better security and more accountability. Flaws is that the process could take a lot longer and it lacks flexibility to make new changes. 
+
+Iterative is the process of working on something small and gradually adding more complex parts built on top of it. Couple of iterative models is the Big Bang, Spiral Model, and Agile Methodology. 
+
+
+### Describe the Agile process
+Agile focuses on adaptive, simultaneous workflows where the project is broken down into smaller iterative periods. Kanban is on process improvements while Scrum is getting more work done faster. Scrum uses the idea of sprints where assigned a set amount of time to implement tasks/features. Along with that is the daily standups that scrum masters starts often where you provide what you have done, what you plan to do, and what is blocking you. There is also the idea of organising tasks with a Scrum Board where there is something like a to do list, in progress, testing, and finished columns. 
+
+Then there's kanban which doesn't use sprints and does something called continuous improvements where the team meets often to discuss changes that needs to be made. They use a kanban board as well with a set limit on how many tasks are made available. 
+
+### What is DevOps?
+It is a software development methods which focuses on communication, integration, and collaboration among IT proffessionals to enable rapid deployment of products.
+
+... look at notes for 3/18/19
+
+### What is CI and the two CD?
+
+
+### What is a pipeline?
+
+
+### what is static analysis and what did we use for it?
+
+
+### What are the difference between IaaS, PaaS, SaaS,and CaaS?
+
+
+### What is Docker?
+
+
+### Docker Commands?
+
+
+### What is a Docker compose, orchestration, and stack?
+
