@@ -69,13 +69,12 @@ some commands you can use
 - docker stack deploy -c dockerup.windev.yml housing-forecast-stack
 
 ### **trying to run VS locally**
-currently haven't figured out
 
 the config has the service looking for the DB at 192.168.99.100 instead of in a docker
 service. (According to appsettings.Development.json, which is otherwise
 overridden in the dockerup.windev.yml file.)
 
-docker run --rm -d -p 5432:5432 postgres
+`docker run --rm -d -p 5432:5432 postgres`
 
 The configuration "Settings:ServiceHubConnection" decides where the service hub
 is located. The default in Development is to connect to the deployed APIs
@@ -90,8 +89,16 @@ or add to user secrets:
 }
 ```
 
+- **NOTE TO SELF:** remember to remove the changes I made to test locally
+	- within housing-forecast
+		- dockerup.windev.yml
+		    - Settings__ServiceHubConnection=DockerMachineHttp
+		- appsettings.Development.json
+			-  "ServiceHubConnection": "DockerMachineHttp"
+	- within interface-web-forecast
+		- in environment.ts we uncommented the url to test locally
 
-## within terminal to pull all
+## within terminal to pull all (assumption on broker branch)
 - cd housing-forecast
 - git pull
 - cd ..

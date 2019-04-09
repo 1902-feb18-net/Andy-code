@@ -228,25 +228,396 @@ Then there's kanban which doesn't use sprints and does something called continuo
 ### What is DevOps?
 It is a software development methods which focuses on communication, integration, and collaboration among IT proffessionals to enable rapid deployment of products.
 
-... look at notes for 3/18/19
+Devops is an automated development process through the usage of pipelines that is useful for catching errors, faster deployments, and more coordination between team members. What Azure Devops provides is board, artifacts, pipelines, and many more. Artifacts are deployable components of the app repos, test plans. 
+
+Pipeline artifacts help you store build outputs and move intermediate files between stages in your pipelines. Artifacts are the files that you want your build to produce. They can be anything that your team needs to test or deploy your app.
+
+Devops is a set of practices for deploying and running production systems. Agile sets the stage for devops where it provides teams a formula to deploy more often and increase quality. 
+
+The principle of flow: decrease the time from commit to code running in production. The principle of feedback where increase the feedback from production back to development. THe principle of contnuous learning and experimentation where you continuously improve and evolve the process. 
 
 ### What is CI and the two CD?
+Continuous integration, continuous delivery and deployment.
+
+Continuous integration is the idea of commit often and push often. It is the process of automating the build and testing of code every time someone commits a change to the vcs. Some benefits is less time wasted in fighting merge issues and rapid feedbacks. Continuous integration puts a great emphasis on testing automation to check that the application is not broken whenever new commits are integrated into the main branch.
+
+Continuous delivery is the automated procedure to build, test, configure and have project ready for deployment. Many testing/staging environment creates a release pipeline to automate the creation/deployment of new infrastructure. on top of having automated your testing, you also have automated your release process and you can deploy your application at any point of time by clicking on a button
+
+Continuous deployment is where your project goes through the whole pipeline and is put into production. This includes the release, unlike continuous delivery where devs controls the final release. With this practice, every change that passes all stages of your production pipeline is released to your customers. an excellent way to accelerate the feedback loop with your customers and take pressure off the team as there isn't a Release Day anymore. 
 
 
-### What is a pipeline?
+### What is a build and release pipeline?
 
+Deployment pipeline is an automated process that first goes through building the software, then through stages of testing and deployment. 
 
-### what is static analysis and what did we use for it?
+pipeline procedures are triggered whn code is committed to a repo hosted for example github. Then comes notification to build system which compiles the code and run tests. After this would be some integration tests. Now you can create images and push to some registry service like Docker Hub which can then be easily deployed. 
+
+release pipelines help you monitor whether a release has been deployed and tested on each of these stages. It also tracks whether an issue fixed by a developer, or a product backlog item completed by your team, has been deployed to a specific stage. Release pipelines let you specify which users can change the configuration of an stage, or approve the release to be deployed into a particular stage.
+
+CI build -> Dev Servers -> QA servers -> Pre production servers -> production servers
+
+Pre deployment approval -> queue deployment job -> agent selection -> download artifacts -> run deployment tasks -> generate process logs -> post deployment approval
+
+### what is static analysis and what do we use for it?
+
+static analysis is a way of examining the code without executing the program. Gives you a way of understanding code structure and ensure that the code follow industry standards. It's a way of going over code to find problems, security flaws, and bad practices.
+
+In my case I used SonarCloud as our static analysis tool. What is nice is that we find security flaws and bad practices. It gives us idea of duplicated code and code smells. Also we can define quality gate and profiles where quality gate is we must meet some conditions before our project is good to be deployed like 50% code coverage. Quality profile are like rules for the language you use. 
 
 
 ### What are the difference between IaaS, PaaS, SaaS,and CaaS?
 
+Infrastructure as a service: Is something that provides a lot of tools that a developer can use to devlop their own application. An example would be Microsoft Azure which provides a variety of services that can be used together to build an application. Database, pipelines, app services to deploy and many more.
+
+Platform as a service: is something that was can use to host our application and will do all of the troublesome tasks for us so all we need to focus on is coding our app. Examples are Azure cloud services, Azure VM
+
+Software as a service: As long as you have internet, you can install those applications. They are things like GMail, Dropbox, and a variety of other apps that provides features and functionalities that we don't have to write ourselves. 
+
+container as a service: The idea of using containers to host our applications. Docker is a prime candidate for this
 
 ### What is Docker?
+A tool to make it easier to create, deploy, and run apps by using containers. Containers allows you to package up an app with all the parts it needs such as libraries and other dependencies and ship in one package. 
 
+Docker containers: containers are runtime environments. You usually run one main process in one Docker container. You can think of this like one Docker container provides one service in your project.
+
+docker image is an instance of a container. A file composed of many layers used to execute code in a Docker container. essentially built from the instructions for a complete and executable version of an application, which relies on the host OS kernel.
+
+Docker containers are started by running a Docker image. A Docker image is not a runtime, it’s rather a collection of files, libraries and configuration files that build up an environment.
+
+
+### Containers vs VM?
+Rather than creating a whole virtual OS, docker allows the usage of the same linux kernel as the system it's running on. Gives performance boost and reduces the size of the app. 
+
+### What is a dockerfile?
+A Dockerfile is a text file that defines a Docker image. Docker’s main purpose is to give us run-time environments that we can re-create/reproduce on any machine (that runs Docker). It is used to define your custom environment to be used in a Docker container.
+
+After you create a dockerfile you execute with a `docker build` and now you can use this image to start containers with `docker run`
+
+```
+# sample of Nick's docker file
+# multi-stage build - FROM command can name a stage.
+
+FROM mcr.microsoft.com/dotnet/core/sdk:2.2 AS build
+
+WORKDIR /app
+
+# take advantage of docker layer caching...
+# these two layers will be cached so long as the csproj file(s) does not change.
+COPY ./*.csproj ./
+RUN dotnet restore
+
+# if i just change a .cs file, then i can use that cache and the next line will
+# be the first one to actually run.
+
+COPY . ./
+
+# build & publish to /app/out
+RUN dotnet build --no-restore
+
+RUN dotnet test
+
+RUN dotnet publish --no-restore -c Release -o out
+
+# docker allows us to use some layers just temporarily
+# and then copy certain files out of them onto a new base image.
+# this means the resulting final image will be smaller.
+
+# asp.net core runtime image. (much smaller than sdk!)
+FROM mcr.microsoft.com/dotnet/core/aspnet:2.2 AS runtime
+
+WORKDIR /app
+
+# copy from a previous stage, instead of from outside Docker
+COPY --from=build /app/out ./
+
+# set environment variable inside image
+# asp.net core looks at this when seeing what port to put itself on
+# ENV ASPNETCORE_URLS=http://*:5050
+# EXPOSE by itself, does nothing -- but hints to the guy running the container from this
+# image, that he should bind 5050 to something.
+# EXPOSE 5050
+
+# there is technical difference between CMD and ENTRYPOINT
+
+ENTRYPOINT [ "dotnet", "MvcBetterBuild.dll" ]
+
+# best of both worlds from multi-stage build:
+# repeatable build environment, plus small image size
+
+# (add comment to change Dockerfile)
+```
 
 ### Docker Commands?
+most common ones are FROM, COPY, RUN, ENV, EXPOSE, CMD
 
+ENTRYPOINT: Allows you to configure a container that will run as an executable.
+
+EXPOSE: Informs Docker that the container listens on the specified network ports at runtime.
+
+FROM: Sets the base image to use for subsequent layers
+
+WORKDIR: Sets the working directory for any RUN, CMD, ENTRYPOINT, COPY, and ADD instructions that follow it in the Dockerfile.
+
+CMD: The main purpose of a CMD is to provide defaults for an executing container. 
 
 ### What is a Docker compose, orchestration, and stack?
 
+Docker compose is where you use a YAML file to configure your app's services. Then with a command you create and start all the services from your configuration.
+
+steps: define app env with a dockerfile so it can be reproduced anywhere. Then you define the services that makes up your app that can run together in isolated environment. Run dock-compose up and compose starts to run your app.
+
+Docker orchestration is a way of managing groups of containers that makes up the app into logical units for easy management. Kubernetes and Docker Swarm are examples. 
+
+Docker stack is a group of interrelated services that share dependencies and can be orchestrated and scaled together. Single stack can define and coordinate functionality of entire app.
+
+---
+
+## Week 5: Service orieented architecture, REST, JS
+Wow am I really sleepy...
+
+### What are the differences between SOAP and REST?
+SOAP isn't bound to the HTTP protocol like REST is, and is clearly outlines the service.  However, unlike REST, it is bound to XML, while REST can be JSON or XML, and REST has greater flexibility in implementation as REST is a framework where SOAP is a protocol.
+
+The SOAP specifications are official web standards, maintained and developed by the World Wide Web Consortium (W3C). As opposed to SOAP, REST is not a protocol but an architectural style. The REST architecture lays down a set of guidelines you need to follow if you want to provide a RESTful web service, for example, stateless existence and the use of HTTP status codes.
+
+As SOAP is an official protocol, it comes with strict rules and advanced security features such as built-in ACID compliance and authorization. Higher complexity, it requires more bandwidth and resources which can lead to slower page load times.
+
+REST: Therefore it has a more flexible architecture. It consists of only loose guidelines and lets developers implement the recommendations in their own way. It allows different messaging formats, such as HTML, JSON, XML, and plain text, while SOAP only allows XML
+
+### What is SOAP? (message, WSDL)
+
+it is an XML based messaging protocol for exchanging info among computers. Can extend HTTP for XML messaging.
+
+SOAP message contains the following elements:
+- Envelope defines the start and end of the message. (M)
+- Header: contains optional attributes of message used in processing the message (optional)
+- Body: contains XML data comprising the message being sent (mandatory)
+- Fault: optional provide info on errors that might have occured.
+
+soap includes built in set of rules for encoding data tyes: two categories scalar and compound types. Scalar contains one value such as last name, price etc. Compound contains multiple values like purchase order etc..
+
+
+WSDL is web service description language. XML based definition language used to describe functionality of a SOAP based web service. WSDL definitions describe how to access a web service and what operations it will perform. WSDL is a language for describing how to interface with XML-based services.
+
+WSDL document contains:
+- Definition: root element define name of web service, namespaces, and service elements
+- data type: data types to be used in messages are in form of XML schemas
+- message: abstract definition of data in form of message 
+- operation: abstract def of operation for message, such as naming a method, message queue that will accept and process the message
+- port type: defining collection of operations for bindings. Mapped to multiple transports through various bindings
+	- The portType element defines a single operation
+	- usually one way
+	- usually we make a request and response
+- binding: protocol and data formats for operations and messages defined for particular port type
+- port: combination of binding and network address, providing target address of service communication
+- service: collection of related end points encompassing service def in file. Service maps the binding to port
+
+
+In a normal day to day life example:
+
+WSDL: When we go to a restaurant we see the Menu Items, those are the WSDL's.
+
+Proxy Classes: Now after seeing the Menu Items we make up our Mind (Process our mind on what to order): So, basically we make Proxy classes based on WSDL Document.
+
+SOAP: Then when we actually order the food based on the Menu's: Meaning we use proxy classes to call upon the service methods which is done using SOAP.
+
+### What is WCF?
+Windows Communication Foundation.  It's a framework for building service-oriented applications.  Using WCF, you can send data as asynchronous messages from one service endpoint to another.  A service endpoint can be part of a continuously available service hosted by IIS or it can be a service hosted in an application.  An endpoint can be a client of a service that requests data from a service endpoint.
+
+Or in other words, it's a framework for building service oriented applications that send data as messages from one service endpoint to another.
+
+consists of 3 things:
+WCF service: What is the service and what it is providing
+WCF Service Host: Where is the service hosted
+ - IIS, Self, and WAS hosting
+Service Client: Who is the client of the service
+
+These are properties of endspoints in WCF.
+
+https://docs.microsoft.com/en-us/dotnet/framework/wcf/feature-details/endpoints-addresses-bindings-and-contracts
+
+Address: Indicates where the endpoint can be found. The address uniquely identifies the endpoint and tells potential consumers of the service where it is located. It is represented in the WCF object model by the EndpointAddress class. An EndpointAddress class contains: Uri, identity
+
+Binding: How a client can comunicate with the endpoint. The transport protocol to use (for example, TCP or HTTP).
+The encoding to use for the messages (for example, text or binary). The necessary security requirements (for example, SSL or SOAP message security).
+
+Contract: Identifies the operations available.
+Couple off top of my head is data, operations, service contracts... too sleepy
+
+### What are the 6 REST principles?
+
+REST stands for representational state transfer and it is an architectural framework that deals with HTTP to communicate over the web. 
+
+Off the top of my head it is:
+- Statelessness
+	- a request contains everything it needs.
+	- each request from the client should contain all the information necessary to service the request – including authentication and authorization details.
+- cacheability
+	- after running a common request once, it stores a cache of that request to fetch info required quickly the next time. Generally for safe methods.
+- Uniform interface
+	- no matter which browser you run the command in, it should display the same result to you
+- Layered system
+	- each layer should not be to themselves, loosely coupled from one another.
+- client-server
+	- separation of concern by separating client UI from the server side.
+- code on demand
+
+
+### What are the different HTTP requests? safe, idempotent?
+GET, POST, PUT, DELETE, OPTION, HEAD, TRACE.
+
+Safe are GET, HEAD, OPTIONS
+
+Idempotent is everything but POST
+
+
+### What are some of the important status codes?
+common ones are 200 for okay, 201 for created, 400 for bad request, 404 for not found, 500 for internal server error
+
+**418 I am a teapot**
+
+
+### What is the purpose of a HTTP header?
+HTTP headers allow the client and the server to pass additional information with the request or the response. An HTTP header consists of its case-insensitive name followed by a colon ':', then by its value (without line breaks). Leading white space before the value is ignored.
+
+grouped into: general, request, response, entity headers
+
+Accept headers tell the server what media types are acceptable for the response, while content-type headers tell the client what media types are actually being returned.
+
+### What is ASP.NET Core for APIs?
+
+
+### What is a HttpClient?
+HttpClient class provides a base class for sending/receiving the HTTP requests/responses from a URL. It is a supported async feature of .NET framework. HttpClient is able to process multiple concurrent requests. It is a layer over HttpWebRequest and HttpWebResponse. All methods with HttpClient are asynchronous.
+
+```
+static asyncTaskCallWebAPIAsync()  
+{  
+    using(var client = newHttpClient())  
+    {  
+        //Send HTTP requests from here.  
+    }  
+}  
+```
+
+and from the client defined above you can set base address to be used. And then other HTTP methods like GET
+
+### What the the JS data types?
+numbers, string, boolean, null, undefined, objects, symbol
+
+### What is DOM?
+Document object model. Think of it as an upside down tree representation of an HTML page. Where let's say the document is at the very top and as we traverse down we have things like HTML then within there we have the head, body, footer. and within body we can have divs, p, and many more elements within. We have this idea of DOM traversal to traverse through the tree to reach our desired elements to edit, add, or remove. Typically traverse through siblings, parents, child of each node. 
+
+
+### What is Ajax?
+Asynchronous JavaScript and XML.  It is not a programing language, it just uses a combination of a browser built-in XMLHttpRequest object (to request data from a web server) and JavaScript and HTML DOM (to display or use the data).
+
+It allows web pages to be updated asynchronously by exchanging data with a web server behind the scenes.
+
+usually uses: new XMLHttpRequest(); and we open() and send() requests
+
+Allows the developer to send http requests from JS and process the results without the browser reloading the page.
+
+An object which is returned by the async function like AJAX.  Promise is used to overcome issues with multiple callbacks and provide better ways to manage success and error conditions.  Promise objects have 3 states:
+- pending: async operation is going on
+- resolved: async operation has succeeded
+- rejected: async operation has failed
+
+### What is a promise?
+The Promise object represents the eventual completion (or failure) of an asynchronous operation, and its resulting value.
+
+```
+var promise1 = new Promise(function(resolve, reject) {
+  setTimeout(function() {
+    resolve('foo');
+  }, 300);
+});
+```
+
+it can get ugly with nested promises so a solution to that is fetch.
+
+Fetch API provides a JS interface for accessing and manipulating parts of the Http pipeline for requests and responses using promises.  Fetch also provides a global fetch() method that logically and simply fetches resources asynchronously across the network.
+
+The Promise returned from fetch() won’t reject on HTTP error status even if the response is an HTTP 404 or 500. Instead, it will resolve normally (with ok status set to false), and it will only reject on network failure or if anything prevented the request from completing.
+
+```
+fetch('http://example.com/movies.json')
+  .then(function(response) {
+    return response.json();
+  })
+  .then(function(myJson) {
+    console.log(JSON.stringify(myJson));
+  });
+```
+
+---
+
+## Week 6: Angular, Typescript
+Way too sleepy... seriously.. 2 hrs per each week
+
+### What is TypeScript?
+TypeScript is a superset of JS. It contains everything in JS + additional features like specifying a type, it is a compiled language so you can catch errors earlier on without needing to run the application and find errors on the browser. 
+
+### What is a TS module vs NG 
+TS module is a file that can contain something like a class or interface that can be exported and imported to other files. 
+
+NG module are files like app.module.ts that is used to load dependencies, services, and bootstrap functionality to load the program. It usually contains an @NgModule decorator that contains all of those dependencies. There must be at least one app.module within an Angular project and it is usually called the root module which will be bootstrapped to launch the application
+
+is a global place for creating, registering, and retrieving AngularJS modules.  All modules that should be available to an application must be registered using this mechanism
+
+module?
+### What is Node.js and what do we use it for?
+Node.js is a very light web framework used to make web applications. What comes with node is NPM which is the node package manager which is used to install or update library packages that we define within the package.json. Those libraries installed from dependencies are located within the node_module.
+
+### What is Angular?
+Angular is a java script based web framework that is used to create SPA applications. It lets us extend HTML's syntax to express our components. Through the usage of data binding and DI it removes a lot of duplication/code we have to write. 
+
+### What is a NG decorator and directive?
+Decorators provides additional metadata to whatever it is attached to. Does not alter any of the current code and adds into it. The main types of decorators are:
+- class: @NgModule, @component
+- property: input, output
+- method: @HostLisener
+- parameter: @inject
+
+
+### How do you pass services in your NG application?
+We can pass services within the app.module within the @NgModule class providers section. Within the service class itself, we define an @Injectable class that by default provides a providedIn: root that creates a provider for the service in root. Here is where we can define our API call urls that we can later access from the components or wherever else is called. Then to use the service, we import the service at the top, then within the constructor we inject the service to be used within the component. 
+
+### What is inside of an NgModule?
+- declarations: for our components
+- imports: where we use code from other libraries
+- providers: where we have our services known
+- bootstrap which defines which file to run at the start
+
+
+### What are the different data bindings available?
+there is one way bindings which includes interpolation, event binding, and property binding. Interpolation is from the component to view, and event and property binding is vice versa. Two way binding is by definin NgModel formatted as a banana in a box. 
+
+### What is the difference between an Observable and Promise?
+An observable is similar to a promise, but you continue operations, then when it finishes it notifies you itself. We have to make sure to subscribe the observable to actually have it working. Similar if you are subscribed to a newsletter by email, you would get a newsletter once a week or when some important event happens. Promises is where we have to wait for the action to be finished before we can continue on. 
+
+### How does routing work in an Angular project?
+Routing is a way to navigate from one view to another as users perform some action. NgModule provides a service that lets you define navigation path among diff app states and view hierarchies in your app. There could be a app.routing.ts file where you define you default route and other routes that you go to. 
+
+### What is an Angular template and how do you use it?
+In AngularJS, template are written with HTML that contains AngularJS specific elements and attributes.  AngularJS combines the template with information from the model and controller to render the dynamic view that a user sees in the browser.
+
+Interpolation allows you to incorporate calculated strings into the text between HTML element tags and within attribute assignments. Template expressions are what you use to calculate those strings.
+
+Angular evaluates all expressions in double curly braces, converts the expression results to strings, and links them with neighboring literal strings. Finally, it assigns this composite interpolated result to an element or directive property.
+
+A template expression produces a value and appears within the double curly braces, {{ }}
+
+### How do you test in Angular?
+Similar to xUnit testing in C#, one way to test in Angular is through Jasmine tests. We import all the dependencies we need on top like the components, models, services. Then within the describe we load our declarations, imports, services and etc that we need to test with. Then compile to make our component. And finally use an it to test if what we make is valid. Then we have Karma that displays our tests in the browser and also tells us what we are missing within our tests. if we turn on code coverage when we run our ng test, it will act similarly to sonarCloud by displaying % of code tested and locations that we haven't tested. 
+
+
+## Extra Questions:
+
+### What are collections in C sharp?
+
+### What are action filters
+
+### managed and unmanaged
+
+### how to implement REST
