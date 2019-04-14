@@ -74,3 +74,8 @@ For this I shall list out some general questions from each week and practice tho
 - How does routing work in an Angular project?
 - What is an Angular template and how do you use it?
 - How do you test in Angular?
+
+## Soft skills
+- Tell me about yourself
+- Talk about your projects
+

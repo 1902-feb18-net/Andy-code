@@ -58,6 +58,9 @@ some commands you can use
 - docker stack rm servicehub-batch-stack
 - docker stack rm housing-forecast-stack
 
+### If you see docker swarm message
+- run: `docker swarm init --advertise-addr 192.168.99.100` as an example
+
 ### to build and deploy containers
 - docker build -t servicehub-room .
 - docker stack deploy -c dockerup.windev.yml servicehub-room-stack
@@ -90,13 +93,15 @@ or add to user secrets:
 ```
 
 - **NOTE TO SELF:** remember to remove the changes I made to test locally
-	- within housing-forecast
+	- within housing-forecast (this was if testing for docker)
 		- dockerup.windev.yml
 		    - Settings__ServiceHubConnection=DockerMachineHttp
 		- appsettings.Development.json
 			-  "ServiceHubConnection": "DockerMachineHttp"
+			- original is "AzureHttps"
 	- within interface-web-forecast
 		- in environment.ts we uncommented the url to test locally
+		- original was `https://revaturexyz-housing-dev.southcentralus.cloudapp.azure.com/api/forecast`
 
 ## within terminal to pull all (assumption on broker branch)
 - cd housing-forecast

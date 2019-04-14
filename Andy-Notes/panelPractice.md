@@ -54,6 +54,9 @@ From a VS project -> compiler --creates-> Managed Assembly (.exe or .dll) MSIL m
 note CLR also provides other services like auto garbage collection, exception handling and resource management. 
 
 
+### What is a constructor?
+It is a special method of class that gets invoked whenever an instance of the class is created. A constructor contains a collection of instructions that are executed at the time of obj creation. Used mostly to assign initial values to the data members of the same class. A constructor without parameters is called a default constructor. It has every instance of the class to be initialized to the same values. Init all numeric fields to zero and all string and obj to null inside a class. 
+
 ### How do you perform unit tests in a .Net application?
 In a .Net application we can perform xUnit tests that follows this AAA process. 
 1. Arrange: where we arrange the necessary data or things we'll need to act upon
@@ -61,6 +64,12 @@ In a .Net application we can perform xUnit tests that follows this AAA process.
 3. Assert: we do some form of checks to assert if the results of the act is true or false
 
 We can use a [Fact] or [Theory] attribute where fact takes no method arguments. Theory expects one or more DataAttribute instances to provide values for the method arguments. 
+
+### Serialization
+Serialization is the process of converting an obj into a form that can be readily transported. We can serialize an object and transport over internet using HTTP between a client and server. Deserialization converts it back into an object to be read from the stream. 
+One method of serializing is XML serialization to generate an XML stream that conforms to a XML Schema document. We can serialize an instance of a DataSet. DataSet repreent an in-memory cache of data. For XML we would use an XmlSerializer
+
+to use Json serializer we would need to import Newtonsoft nuget package and call the SerializeObject method. We pass to it the object we want to serialize and the second argument how to format the json string output. 
 
 ---
 
@@ -80,6 +89,23 @@ There are 3 main normal forms that should be taken into consideration.
 Primary key consists of one or more col whose data contained within is used to uniquely identify each row in the table. To be a primary key, the columns must be unique and no values within columns can be blank or NULL. When defining a table you specify the primary key and a table has just one primary key with its definition mandatory.
 
 Foreign keys is a set of one or more columens in a table that refers to the primary keys in another table. We can enter in FK constraints to enforce referential integrity so that it stops you from entering in values that aren't found in the related table's primary key. 
+
+### Union vs Join
+Union combines two SELECT staements into a single result set which inclues all the rows that belong to the Select statments in the union. Number and order of col the same and data types must be the same or compatible. 
+
+So join technically combines columns from two tables while union combines rows from two queries. Join appends the results horizontally, while union appends results vertically
+
+### What is Scalar in TSQL?
+it essentially acts similar to a function where we define a CREATE FUNCTION with an optional schema and the name of the function. Then you list out the parameter it takes in. We then specify the return value in return statement. And finally within the Begin and END body we run statements to return a value. 
+
+```sql
+CREATE FUNCTION [schema_name.]function_name (parameter_list)
+RETURN data_type AS
+BEGIN
+    statements
+    RETURN value
+END
+```
 
 ### Clustered vs nonclustered?
 Clustered is where the rows are stored physically on the disk in the same order as the index. This means there can only be one clustered index. Nonclustered is where we have a 2nd list that has pointers to the physical rows, and you can have many non clustered indexes.
@@ -106,12 +132,18 @@ To go deeper into isolation, there are 4 levels of isolation
 2. read_committed: fixes dirty read (see other transactions unfinished work)
 3. repeatable_read: fixeds nonrepeatable read (reading rows more than once, another transaction change in between)
 4. serializable: fixed phantom read(transactions can insert rows that meets conditions)
+	- data getting changed in current transactions by other transactions
 
 ### What is ADO.NET? Connected and Disconnected architecture?
 Connected architecture is where we are constantly connected to a database to retrieve data. We gennerally start with opening a connection. Then we execute some command.ExecuteReader() that returns a DataReader for SELECT queries. We then process the results and finally close the connection when finished. 
 
 Disconnected is where we open a connection to the database to grab what we need and store it into some variable to be used. We want to minimize the amount of time the connection spends open since it costs resources to keep open(although faster). We open a connection, then we fill a dataSet by using the DataAdapter. Then we close thc onnection and process results which contains our dataset that containes some DataTable with its rows and columns. 
 
+### DbSet vs DataSet
+- The DbSet class represents an entity set that can be used for create, read, update, and delete operations.
+	- The context class (derived from DbContext) must include the DbSet type properties for the entities which map to database tables and views.
+- DataSet is a collection of datatables. We can store the database table, view data in the DataSet and can also store the xml value in dataset and get it if required. 
+	- To achieve this you need to use DataAdapter which work as a mediator between Database and DataSet.
 
 ### What is Entity Framework?
 Entity framework is an ORM which stands for Object Relational Mapping that enables .NET devs to work with a db using .NET objects. Our .NET project usually consists of a UI, BLL, and DAL and Entity Framework would go within the DAL. What it does is to save data stored in properties of business entities and retrieves data from the db and converts to business entity objects automatically. 
@@ -121,10 +153,19 @@ Another definition is: a tool that simplifies mapping between objects in your so
 Features it contains:
 - cross-platform can run on many OS like windows, linux, mac
 - Modelling: creates an EDM (entity data model) with get and set properties of different data types
-- Querying: allows usage of LINQ to retrieve data from underlying db. 
+- Querying: allows usage of LINQ (language integrated query) to retrieve data from underlying db. 
 - Allows you to execute INSERT, UPDATE, DELETE commands to db based on changes occured to your entities when you call SaveChanges() or SaveChangesAsync()
 - Allows set of migration commands that can be executed. 
 
+### Setting up database first?
+1.  Have startup project and data access library project.
+2.  Reference data access from startup project
+3.  Add NuGet packages to startup project
+4.  Open package manager console in VS
+5.  Run command
+	- `Scaffold-DBContext "<your-connection-string>" Microsoft.EntityFrameworkCore.SqlServer -Project <name-of-data-project> -Force`
+6.  Delete OnConfiguring override in the DbContext
+7.  Any time we change the DB go to step 4
 
 ### What is the difference between IEnumerable and IQueryable?
 `IQueryable<T>` takes expression objects instead of delegates IQueryable inherits from IEnumerable, so can do anything IEnumerable can do
@@ -201,10 +242,13 @@ Routing: url-mapping component that lets you build apps with comprehensible and 
 
 
 ### Tag vs HTML helpers?
-Tag helpers are attached to HTML elements inside your razor views and can help you write markup easier to read than HTML helpers. Tag helpers target standarf HTML elements and provide server side attributes for the elements. Tag helpers inclides things like `asp-for`, which extracts the name of the specified model property into rendered HTML. 
+Tag helpers are attached to HTML elements inside your razor views and can help you write markup easier to read than HTML helpers. Tag helpers target standard HTML elements and provide server side attributes for the elements. Tag helpers includes things like `asp-for`, which extracts the name of the specified model property into rendered HTML. 
 
 HTML helpers are invoked as methods that are mixed with HTML inside your Razor views. VS provides intellisense support when writing HTML helpers, as their parameters are all strings. Example are the LabelFor and TextBoxFor HTML helpers.
 
+
+### What is DBContext
+It is the primary class responsible for interacting with the database. Querying, persisting data, caching, managing relationshis and variety of others. 
 
 ### What is a dependency injection and its types?
 Dependency injection is a software design pattern which is a technique to achieve inversion of control between classes and their dependencies. Dependency is any object that another object requires. So to achieve DI we make use of an interface to abstract the dependency implementation. Registering the dependency in a service container(IServiceProvider) that are registered in the app's Startup.ConfigureServices method. Or injecting of the services into the constructor of the class where it's used. 
@@ -444,6 +488,14 @@ The encoding to use for the messages (for example, text or binary). The necessar
 Contract: Identifies the operations available.
 Couple off top of my head is data, operations, service contracts... too sleepy
 
+Where is our endpoints
+How to communicate with our endpoints
+What operations are available at the endpoints?
+
+Service contracts: Describe which operations the client can perform on the service.
+
+Data contracts: Define which data types are passed to and from the service
+
 ### What are the 6 REST principles?
 
 REST stands for representational state transfer and it is an architectural framework that deals with HTTP to communicate over the web. 
@@ -615,9 +667,71 @@ Similar to xUnit testing in C#, one way to test in Angular is through Jasmine te
 ## Extra Questions:
 
 ### What are collections in C sharp?
+the way how objects are handled by your program. It contains a set of classes to contain elements in generalized manner. Defines a generic implementation of standard structures like linked lists, stacks, queues, dictionaries, hashsets.
+
+Dictionaries are k/v pairs, List is dynamic array, Queues is fifo, stack is LIFO, hashset is unordered collection of unique elements. Prevents duplicates. 
 
 ### What are action filters
+executes before and after an action method executes. Can create a custom ActionFilter for logging. Sample of making a custom is `void OnActionExecuted(ActionExecutedContext filterContext)`
+
+attributes you can apply to a controller action or entire controller which modifies the way the action is executed. A couple are OutputCache (caches output of controller action for certain time), HandleError (handle errors raised when controller action executes), Authorize (enables you to restrict access to a particular user or role)
+
+Other types of filters are: Authorization filters(IAuthorizationFilter), Action(IActionFilter),Result(IResultFilter), and Exception (IExceptionFilter) attributes. 
+
+They are executed in order listed above. 
+
+Key points:
+- allows pre and post processing logic to be applied to action method
+- generally used to apply cross cutting concerns like: logging, caching, authorization etc
+- can be registered as other filters at gloabl, controller, or action method level
+- custom action filters attribute can be created by deriving ActionFilterAttribute class or implementing IActionFilter interface and FilterAttribute abstract class
+- Every action filter must override OnActionExecuted, OnActionExecuting, OnResultExecuted, OnResultExecuting methods
 
 ### managed and unmanaged
+managed code are code that is executable by the CLR. COde that targets the Common language runtime. It provides the metadata necessary for the CLR to provide services such as memory management, cross lanuage integration, code access security, and automatic garbage collection. All code based on IL executes as managed code. Code that executes under the CLI execution environment.
+
+Insulates the program from the machine its running on and creates a secure boundary in which all memory is allocated indirectly and we don't have direct access to machine resources like ports, mem address space, stack etc... idea is to run in a more secure environment. 
+
+umanaged code is compiled to machine code and executed by the OS directly. Has the ability to do damaging and powerful things. 
 
 ### how to implement REST
+we generally create an ASP.NET Web API Application. Then our project will be split up into subfolders for separation of concerns where we will have the DAL, the controllers, and our library. The controllers is where we define our GET, POST, PUT, DELETE web requests. DAL is what we will use to access data from our database. The models will contain the object oriented logic. 
+
+### what is a service and SOA?
+SOA is service oriented architecture which is an architectural approach make use of services available in the network. Services are provided to form applications, through a communication call over the internet. 
+
+Two majors roles are:
+- service provider: maintainer of the service and organization that makes available one or more services for others to use. Can publish in registry, together with service contract that specifies nature of the service
+- service consumer: can locate service metadata in registry and devleop req. client components to bind and use service
+
+principles: standardized service contract, loose ccoupling, abstraction, reusability, autonomy, discoverability, composability
+
+service orchestration: service might aggregate information and data retrieved from other services or create workflows of services to satisfy the req of a given service consumer. 
+
+service choreography: coordinated interaction of services without a single point of control
+
+### what is the lifecycle of MVC and HTTP?
+for mvc
+- Routing: routes url to its controller and action
+- Url routing module intercepts request: it then wraps up current HttpContext in an HttpContextWrapper object.
+- mvc handler executes: will call BeginProcessRequest method of httpAsyncHandler async. A new controller gets created from ControllerFactory
+- Controller executes: controller is called and its action call requested by user
+- render view method called: where we return a view
+
+user from browser -> req -> routing -> mvc handler -> controller -> action execution -> view result -> view engine -> view -> response -> user
+
+### What are the ABC's for WSDL?
+- web service description language.
+- A stands for address: where is the service?
+	- expressed in the wsdl:service section and links wsdl:binding to concrete service endpoint address
+- B stands for binding: How do I talk to the service?
+	- expressed in wsdl:binding section and binds wsdl:portType contract description to a concrete transport, envelope and associated policies
+	- tells us how we find the services or using which protocols finds the services (SOAP, HTTP, TCT...)
+- C stands for contract: what can the service do for me?
+	- expressed in wsdl:portType, wsdl:message and wsdl:type sections and describes types, messages, message exchange patterns and operations
+	- agreement between consumer and service providers that explains what params the service expects and what return value it gives. 
+
+### Tag Helper vs HTML Helper again
+
+## Tell me about yourself?
+- 
