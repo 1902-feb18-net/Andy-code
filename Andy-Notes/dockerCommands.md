@@ -57,6 +57,7 @@ some commands you can use
 - docker stack rm servicehub-room-stack
 - docker stack rm servicehub-batch-stack
 - docker stack rm housing-forecast-stack
+- docker stack rm housing-selection-stack
 
 ### If you see docker swarm message
 - run: `docker swarm init --advertise-addr 192.168.99.100` as an example
@@ -70,6 +71,8 @@ some commands you can use
 - docker stack deploy -c dockerup.windev.yml servicehub-batch-stack
 - docker build -t housing-forecast .
 - docker stack deploy -c dockerup.windev.yml housing-forecast-stack
+- docker build -t housing-selection .
+- docker stack deploy -c dockerup.windev.yml housing-selection-stack
 
 ### **trying to run VS locally**
 
