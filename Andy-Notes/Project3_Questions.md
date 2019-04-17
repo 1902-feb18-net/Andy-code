@@ -2,7 +2,7 @@
 
 ## Questions
 1. If you had a chance to talk to the batch for next iteration, what would you tell them?
-2. So, did you run into any issues when you working with Selection/Forecast when you were trying to
+2. So, did you run into any issues when you working with Selection/Forecast when you were trying to set up environments for development and testing purposes?
 3. Related to AD, Queues, microservices etc..., not covered in training, what was your approach to learning about it,
 	- and being proficient eenough to integrate it into your project?
 4. What steps did you take to implement Authentication?
